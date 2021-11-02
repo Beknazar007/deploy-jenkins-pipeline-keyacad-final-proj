@@ -11,7 +11,7 @@ pipeline{
                 stage('Build') {
 
                         steps {
-                                sh 'docker build -t nur02/my-image .'
+                                sh 'docker build -t beknazar007/jenkins .'
                         }
                 }
 
@@ -26,7 +26,7 @@ pipeline{
                 stage('Push') {
 
                         steps {
-                                sh 'docker push nur02/my-image'
+                                sh 'docker push beknazar007/jenkins'
                         }
                 }
          
@@ -35,14 +35,14 @@ pipeline{
                      steps {                       
                         withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                             script {
-                                sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker pull nur02/my-image\""
+                                sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker pull beknazar007/jenkins\""
                                 try {
                                     sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker stop final1\""
                                     sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker rm final1\""
                                 } catch (err) {
                                      echo: 'caught error: $err'
                                 }
-                                sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker run --restart always --name final1 -p 8088:80 -d nur02/my-image\""
+                                sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker run --restart always --name final1 -p 8088:80 -d beknazar007/jenkins\""
                             }
                         }
                      }
@@ -54,14 +54,14 @@ pipeline{
                         milestone(1)
                         withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                             script {
-                                sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$dev_ip \"docker pull nur02/my-image\""
+                                sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$dev_ip \"docker pull beknazar007/jenkins\""
                                 try {
                                     sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$dev_ip \"docker stop final22\""
                                     sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$dev_ip \"docker rm final22\""
                                 } catch (err) {
                                      echo: 'caught error: $err'
                                 }
-                                sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$dev_ip \"docker run --restart always --name final22 -p 8088:80 -d nur02/my-image\""
+                                sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$dev_ip \"docker run --restart always --name final22 -p 8088:80 -d beknazar007/jenkins\""
                     }
                 }
             }
