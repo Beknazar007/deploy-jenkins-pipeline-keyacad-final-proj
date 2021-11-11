@@ -1,23 +1,25 @@
+
+
+
+
+
+
+
+
+
+
+
+
 version: 2.1
 
-jobs:
-    build:
-      docker:
-        - image: circleci/node:10
-      steps:
-        - run:
-            name: Install libs
-            command: sudo apt-get install libxtst6 libgconf-2-4 libnss3 libasound2 libgtk-3-0 libxss1
-        - run: npm i cypress --save-dev
-        
-        - run: npm install
-        - run: npm run e2e
-        - run:
-            name: Deploy
-            command: curl -X POST -d {} ${hook}
 
-workflows:
-  build:
-    jobs:
-      - build
-  
+
+
+
+
+
+
+
+
+
+
