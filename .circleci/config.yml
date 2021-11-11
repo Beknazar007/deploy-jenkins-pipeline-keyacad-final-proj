@@ -15,3 +15,9 @@ jobs:
         - run:
             name: Deploy
             command: curl -X POST -d {} ${hook}
+
+workflows:
+  build:
+    jobs:
+      - build
+  
